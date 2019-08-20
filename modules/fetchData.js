@@ -85,13 +85,13 @@ module.exports = function fetchData() {
 
         // Create summary per tag
         fs.emptyDir('static/data/summaries/tag/');
-        const tagset = new Set(allSummaries.data.reduce((a, b) => [...a, ...b.tags], []));
+        const tagset = new Set(allSummaries.data.reduce((a, b) => [...a, ...b.tags], []).map(tag => tag.toLowerCase()));
 
         fetcher.push(writeData('static/data/summaries/tags.json', { content: Array.from(tagset) }));
 
         console.log(tagset)
         for (let tag of tagset) {
-          let summariesByTag = allSummaries.data.filter(summary => summary.tags.includes(tag));
+          let summariesByTag = allSummaries.data.filter(summary => summary.tags.map(tag => tag.toLowerCase()).includes(tag));
           let tagDataPath = `static/data/summaries/tag/${tag}/list.json`;
 
           fetcher.push(writeData(tagDataPath, { content: summariesByTag, meta: { totalCount: summariesByTag.length } }));

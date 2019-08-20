@@ -50,7 +50,7 @@ export default {
   },
   asyncData({ params }) {
     let tag = params.tag;
-    let { content: summaries, meta: { totalCount } } = require(`~/static/data/summaries/tag/${tag}/list.json`);
+    let { content: summaries, meta: { totalCount } } = require(`~/static/data/summaries/tag/${tag.toLowerCase()}/list.json`);
     return {
       summaries,
       tag,

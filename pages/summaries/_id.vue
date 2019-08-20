@@ -62,7 +62,7 @@
         <div class="article-footer">
           <ul class="article-tag-list">
             <li v-for="(tag, idx) in summary.tags" :key="idx" class="article-tag-list-item">
-              <nuxt-link :to="`/summaries/tag/${tag}`" class="article-tag-list-link">
+              <nuxt-link :to="`/summaries/tag/${tag.toLowerCase()}`" class="article-tag-list-link">
                 {{ tag }}
               </nuxt-link>
             </li>

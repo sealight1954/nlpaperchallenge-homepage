@@ -3,7 +3,7 @@
     <b-media>
       <h5 class="mt-0"><nuxt-link :to="`/summaries/${summary.id}`">{{ summary.title }}</nuxt-link></h5>
       <div>by: {{ summary.resumer }}</div>
-      <nuxt-link :to="`/summaries/tag/${tag}`" class="tag tag-primary" v-for="(tag, idx) in summary.tags" :key="idx">
+      <nuxt-link :to="`/summaries/tag/${tag.toLowerCase()}`" class="tag tag-primary" v-for="(tag, idx) in summary.tags" :key="idx">
         {{ tag }}
       </nuxt-link>
     </b-media>
