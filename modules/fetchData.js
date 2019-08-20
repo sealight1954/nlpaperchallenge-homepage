@@ -30,7 +30,7 @@ module.exports = function fetchData() {
       return new Promise((resolve, reject) => {
         try {
           fs.ensureFileSync(path)
-          fs.writeFile(path, new Buffer(base64encodedData, 'base64'), resolve(`${path} Write Successful`));
+          fs.writeFile(path, Buffer.from(base64encodedData, 'base64'), resolve(`${path} Write Successful`));
         } catch(e) {
           console.error(`${path} Write failed. ${e}`)
                 reject(`${path} Write Failed. ${e}`)
