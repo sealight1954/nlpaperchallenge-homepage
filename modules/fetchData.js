@@ -7,7 +7,8 @@ const urls = [
   `${GOOGLE_APP_SCRIPT_URL}?entity=events`,
   `${GOOGLE_APP_SCRIPT_URL}?entity=members`,
   `${GOOGLE_APP_SCRIPT_URL}?entity=resources`,
-  `${GOOGLE_APP_SCRIPT_URL}?entity=summaries`
+  `${GOOGLE_APP_SCRIPT_URL}?entity=summaries`,
+  `${GOOGLE_APP_SCRIPT_URL}?entity=image`,
 ]
 
 
@@ -57,7 +58,9 @@ module.exports = function fetchData() {
         fs.emptyDir(`static/image/summaries`)
         for (let summary of allSummaries.data) {
           if(summary['image']) {
-            const [ meta, base64encodedData ] = summary['image'].split(',')
+            const response = await axios.get(`${urls[4]}&image_id=${summary['image']}`)
+            console.log(`Downloading image with image_id=${summary['image']}`)
+            const [ meta, base64encodedData ] = response.data.split(',')
             const extension = meta.split(';')[0].substring(11)
             const path = `static/image/summaries/${summary.id}.${extension}`
             fetcher.push(writeImage(path, base64encodedData))
