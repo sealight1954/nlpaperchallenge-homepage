@@ -94,17 +94,28 @@ export default {
   asyncData({ params }) {
     let id = params.id;
     let { content: summary, meta: { totalCount } } = require(`~/static/data/summaries/id/${id}.json`);
+    let header = require(`../header.json`);
     return {
       summary,
       totalCount,
-      isLoading: false
+      isLoading: false,
+      header
     }
   },
   methods: {
     handleChange(page) {
       this.$router.push(`/summaries/${page}`)
     }
-  }
+  },
+  head() {
+    var header_t=Object.assign({},this.header);
+    header_t['title']=this.summary.title;
+    header_t['meta'].find(e=>e.hid=='description').content=this.summary.overview;
+    header_t['meta'].find(e=>e.hid=='og:title').content=this.summary.title;
+    header_t['meta'].find(e=>e.hid=='og:description').content=this.summary.overview;
+    header_t['meta'].find(e=>e.hid=='og:image').content=this.summary.image;
+    return header_t;
+  },
 };
 </script>
 
