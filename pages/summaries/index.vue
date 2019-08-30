@@ -49,7 +49,8 @@ export default {
     return {
       summaries,
       totalCount,
-      isLoading: false
+      isLoading: false,
+      header
     }
   },
   methods: {
