@@ -16,7 +16,7 @@
     {
       "hid": "author",
       "name": "author",
-      "content": "cvpaper.challenge"
+      "content": "nlpaper.challenge"
     },
     { "hid": "viewport", "name": "viewport", "content": "width=device-width, initial-scale=1" },
     {
@@ -27,7 +27,7 @@
     {
       "hid": "og:site_name",
       "property": "og:site_name",
-      "content": "cvpaper.challenge"
+      "content": "nlpaper.challenge"
     },
     {
       "hid": "og:title",
@@ -42,15 +42,15 @@
     {
       "hid": "og:image",
       "property": "og:image",
-      "content": "http://xpaperchallenge.org/cv/image/logo/cc_logo_1_crop.png"
+      "content": "http://xpaperchallenge.org/nlp/image/logo/title.svg"
     },
     {
       "hid": "og:url",
       "property": "og:url",
-      "content": "http://xpaperchallenge.org/cv/survey/cvpr2019_summaries"
+      "content": "http://xpaperchallenge.org/nlp/summaries"
     }
   ],
   "link": [
-    { "rel": "icon", "type": "image/x-icon", "href": "/cv/survey/favicon.ico" }
+    { "rel": "icon", "type": "image/x-icon", "href": "/nlp/favicon.ico" }
   ]
 }
