@@ -99,6 +99,7 @@ export default {
     let { content: summary, meta: { totalCount } } = require(`~/static/data/summaries/id/${id}.json`);
     let header = require(`../header.json`);
     return {
+      id,
       summary,
       totalCount,
       isLoading: false,
@@ -116,7 +117,8 @@ export default {
     header_t['meta'].find(e=>e.hid=='description').content=this.summary.overview;
     header_t['meta'].find(e=>e.hid=='og:title').content=this.summary.title;
     header_t['meta'].find(e=>e.hid=='og:description').content=this.summary.overview;
-    header_t['meta'].find(e=>e.hid=='og:image').content=this.summary.image;
+    header_t['meta'].find(e=>e.hid=='og:image').content=`http://xpaperchallenge.org${this.summary.image}`;
+    header_t['meta'].find(e=>e.hid=='og:url').content= `http://xpaperchallenge.org/nlp/summaries/${this.id}`;
     return header_t;
   },
 };
