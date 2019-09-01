@@ -46,17 +46,22 @@ export default {
   asyncData({ params }) {
     let page = parseInt(params.page);
     let { content: summaries, meta: { totalCount } } = require(`~/static/data/summaries/page/${page}/list.json`);
+    let header = require(`../../header.json`)
     return {
       summaries,
       page,
       totalCount,
-      isLoading: false
+      isLoading: false,
+      header
     }
   },
   methods: {
     handleChangePage(page) {
       this.$router.push(`/summaries/page/${page}`);
     }
-  }
+  },
+  head() {
+    return this.header;
+  },
 };
 </script>

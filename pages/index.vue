@@ -85,11 +85,16 @@ export default {
   },
   asyncData() {
     let events = require('~/static/data/events.json').content;
+    let header = require(`./header.json`);
     return {
       events,
-      isLoading: false
+      isLoading: false,
+      header
     }
-  }
+  },
+  head() {
+    return this.header;
+  },
 };
 </script>
 

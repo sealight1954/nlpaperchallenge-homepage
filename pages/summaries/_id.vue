@@ -67,6 +67,9 @@
               </nuxt-link>
             </li>
           </ul>
+          <p>
+            このページで利用されている画像は論文から引用しています．
+          </p>
         </div>
       </div>
       <b-pagination
@@ -94,17 +97,30 @@ export default {
   asyncData({ params }) {
     let id = params.id;
     let { content: summary, meta: { totalCount } } = require(`~/static/data/summaries/id/${id}.json`);
+    let header = require(`../header.json`);
     return {
+      id,
       summary,
       totalCount,
-      isLoading: false
+      isLoading: false,
+      header
     }
   },
   methods: {
     handleChange(page) {
       this.$router.push(`/summaries/${page}`)
     }
-  }
+  },
+  head() {
+    var header_t=Object.assign({},this.header);
+    header_t['title']=this.summary.title;
+    header_t['meta'].find(e=>e.hid=='description').content=this.summary.overview;
+    header_t['meta'].find(e=>e.hid=='og:title').content=this.summary.title;
+    header_t['meta'].find(e=>e.hid=='og:description').content=this.summary.overview;
+    header_t['meta'].find(e=>e.hid=='og:image').content=`http://xpaperchallenge.org${this.summary.image}`;
+    header_t['meta'].find(e=>e.hid=='og:url').content= `http://xpaperchallenge.org/nlp/summaries/${this.id}`;
+    return header_t;
+  },
 };
 </script>
 
@@ -163,7 +179,7 @@ export default {
   padding-top: 1.6em;
   margin: 0 3em 3em;
 }
-.article-footer a {
+.article-footer a,p{
   color: #999;
   text-decoration: none;
 }
@@ -182,5 +198,9 @@ ol,ul {
 }
 .article-tag-list-link::before {
   content: "#";
+}
+.article-tag-list + *{
+  padding-top: 1em;
+  clear: left;
 }
 </style>
