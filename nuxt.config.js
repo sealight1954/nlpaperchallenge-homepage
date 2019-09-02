@@ -17,6 +17,7 @@ module.exports = {
           'nlpaper.challenge, cvpaper.challenge, nlp, natural language processing, paper, challenge, computer vision'
       },
       {
+        hid: 'description',
         name: 'description',
         content:
           '自然言語処理の国際会議「ACL」の完全読破を目指すnlpaper.challenge公式ホームページです。 自然言語処理の発展のため、勉強会や交流会を企画していきます。'
@@ -35,19 +36,23 @@ module.exports = {
         content: 'nlpaper.challenge'
       },
       {
+        hid: 'og:title',
         property: 'og:title',
         content: 'nlpaper.challenge - 自然言語処理の国際会議「ACL」の完全読破 !'
       },
       {
+        hid: 'og:description',
         property: 'og:description',
         content:
           '自然言語処理の国際会議「ACL」の完全読破を目指すnlpaper.challenge公式ホームページです。 自然言語処理の発展のため、勉強会や交流会を企画していきます。'
       },
       {
+        hid: 'og:image',
         property: 'og:image',
         content: 'http://xpaperchallenge.org/nlp/image/logo/title.svg'
       },
       {
+        hid: 'og:image',
         property: 'og:url',
         content: 'http://xpaperchallenge.org/nlp'
       }
