@@ -19,12 +19,8 @@
           <b-nav-item to="/schedule" :active="isActive('/schedule')">Schedule</b-nav-item>
           <b-nav-item to="/members" :active="isActive('/members')">Members</b-nav-item>
           <b-nav-item to="/resources" :active="isActive('/resources')">Resources</b-nav-item>
-          <b-nav-item to="/summaries" :active="isActive('/summaries')" class="mr-4">ACL2019</b-nav-item>
-          <b-nav-item
-            to="/summaries_emnlp2019"
-            :active="isActive('/summaries_emnlp2019')"
-            class="mr-4"
-          >EMNLP2019</b-nav-item>
+          <b-nav-item to="/summaries" :active="isActive('/summaries')">ACL2019</b-nav-item>
+          <b-nav-item to="/summaries_emnlp2019" :active="isActive('/summaries_emnlp2019')">EMNLP2019</b-nav-item>
           <b-button
             href="http://xpaperchallenge.org/cv/"
             variant="primary main-button"
