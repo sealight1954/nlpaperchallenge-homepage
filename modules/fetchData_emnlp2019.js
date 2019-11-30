@@ -68,7 +68,7 @@ module.exports = function fetchData() {
       // }
       if (summary['images']) {
         summary['image'] = 'https://drive.google.com/uc?export=view&id=' + summary['images'][0];
-        delete summary.images; //とりあえず
+        // delete summary.images; //とりあえず
       }
     }
 

@@ -66,9 +66,9 @@ module.exports = function fetchData() {
       //   fetcher.push(writeImage(path, base64encodedData))
       //   summary["image"] = `/nlp/image/summaries/${summary.id}.${extension}`
       // }
-      if (summary['images']) {
-        summary['image'] = 'https://drive.google.com/uc?export=view&id=' + summary['images'][0];
-        delete summary.images; //とりあえず
+      if (summary['image']) {
+        summary['image'] = 'https://drive.google.com/uc?export=view&id=' + summary['image'];
+        // delete summary.images; //とりあえず
       }
     }
 

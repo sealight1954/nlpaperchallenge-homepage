@@ -12,15 +12,11 @@
       <div class="article-inner">
         <div class="article-header">
           <b-row>
-            <b-col :sm=12 :md=6>
-              <div class="article-id">
-                #{{ summary.id }}
-              </div>
+            <b-col :sm="12" :md="6">
+              <div class="article-id">#{{ summary.id }}</div>
             </b-col>
-            <b-col :sm=12 :md=6>
-              <div class="article-resumer">
-                summarized by : {{ summary.resumer }}
-              </div>
+            <b-col :sm="12" :md="6">
+              <div class="article-resumer">summarized by : {{ summary.resumer }}</div>
             </b-col>
           </b-row>
           <div class="article-title">
@@ -29,14 +25,14 @@
               <font-awesome-icon class="mr-5" :icon="['fas', 'external-link-alt']" size="xs" />
             </a>
           </div>
-          <div class="article-authors">
-            {{ summary.authors.join(', ') }}
-          </div>
+          <div class="article-authors">{{ summary.authors.join(', ') }}</div>
         </div>
         <div class="article-entry">
           <b-row>
             <b-col sm="12" md="7">
-              <h3 class="section-header"><b>概要</b></h3>
+              <h3 class="section-header">
+                <b>概要</b>
+              </h3>
               <div class="section-content">{{ summary.overview }}</div>
             </b-col>
             <b-col sm="12" md="5" class="text-center">
@@ -62,14 +58,13 @@
         <div class="article-footer">
           <ul class="article-tag-list">
             <li v-for="(tag, idx) in summary.tags" :key="idx" class="article-tag-list-item">
-              <nuxt-link :to="`/summaries/tag/${tag.toLowerCase()}`" class="article-tag-list-link">
-                {{ tag }}
-              </nuxt-link>
+              <nuxt-link
+                :to="`/summaries/tag/${tag.toLowerCase()}`"
+                class="article-tag-list-link"
+              >{{ tag }}</nuxt-link>
             </li>
           </ul>
-          <p>
-            このページで利用されている画像は論文から引用しています．
-          </p>
+          <p>このページで利用されている画像は論文から引用しています．</p>
         </div>
       </div>
       <b-pagination
@@ -81,7 +76,7 @@
       />
     </b-container>
     <p v-else class="text-center">
-      <font-awesome-icon class="mr-5" :icon="['fas', 'spinner']" pulse size="2x"/>
+      <font-awesome-icon class="mr-5" :icon="['fas', 'spinner']" pulse size="2x" />
     </p>
   </div>
 </template>
@@ -96,7 +91,10 @@ export default {
   },
   asyncData({ params }) {
     let id = params.id;
-    let { content: summary, meta: { totalCount } } = require(`~/static/data/summaries/id/${id}.json`);
+    let {
+      content: summary,
+      meta: { totalCount }
+    } = require(`~/static/data/summaries/id/${id}.json`);
     let header = require(`../header.json`);
     return {
       id,
@@ -104,29 +102,39 @@ export default {
       totalCount,
       isLoading: false,
       header
-    }
+    };
   },
   methods: {
     handleChange(page) {
-      this.$router.push(`/summaries/${page}`)
+      this.$router.push(`/summaries/${page}`);
     }
   },
   head() {
-    var header_t=Object.assign({},this.header);
-    header_t['title']=this.summary.title;
-    header_t['meta'].find(e=>e.hid=='description').content=this.summary.overview;
-    header_t['meta'].find(e=>e.hid=='og:title').content=this.summary.title;
-    header_t['meta'].find(e=>e.hid=='og:description').content=this.summary.overview;
-    header_t['meta'].find(e=>e.hid=='og:image').content=`http://xpaperchallenge.org${this.summary.image}`;
-    header_t['meta'].find(e=>e.hid=='og:url').content= `http://xpaperchallenge.org/nlp/summaries/${this.id}`;
+    var header_t = Object.assign({}, this.header);
+    header_t["title"] = this.summary.title;
+    header_t["meta"].find(
+      e => e.hid == "description"
+    ).content = this.summary.overview;
+    header_t["meta"].find(
+      e => e.hid == "og:title"
+    ).content = this.summary.title;
+    header_t["meta"].find(
+      e => e.hid == "og:description"
+    ).content = this.summary.overview;
+    header_t["meta"].find(
+      e => e.hid == "og:image"
+    ).content = `http://xpaperchallenge.org${this.summary.image}`;
+    header_t["meta"].find(
+      e => e.hid == "og:url"
+    ).content = `http://xpaperchallenge.org/nlp/summaries/${this.id}`;
     return header_t;
-  },
+  }
 };
 </script>
 
 <style>
 .pagination-top {
-  margin-top:20px;
+  margin-top: 20px;
 }
 .article-inner {
   margin-top: 20px;
@@ -179,14 +187,16 @@ export default {
   padding-top: 1.6em;
   margin: 0 3em 3em;
 }
-.article-footer a,p{
+.article-footer a,
+p {
   color: #999;
   text-decoration: none;
 }
 .article-footer a:hover {
   color: #777;
 }
-ol,ul {
+ol,
+ul {
   margin-top: 0px;
   margin-bottom: 1rem;
   margin-left: -40px;
@@ -199,7 +209,7 @@ ol,ul {
 .article-tag-list-link::before {
   content: "#";
 }
-.article-tag-list + *{
+.article-tag-list + * {
   padding-top: 1em;
   clear: left;
 }
