@@ -8,7 +8,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'nlpaper.challenge - 自然言語処理の国際会議「ACL」の完全読破 !',
+    title: 'nlpaper.challenge - 自然言語処理の国際会議の完全読破 !',
     meta: [
       { charset: 'utf-8' },
       {
@@ -20,7 +20,7 @@ module.exports = {
         hid: 'description',
         name: 'description',
         content:
-          '自然言語処理の国際会議「ACL」の完全読破を目指すnlpaper.challenge公式ホームページです。 自然言語処理の発展のため、勉強会や交流会を企画していきます。'
+          '自然言語処理の国際会議の完全読破を目指すnlpaper.challenge公式ホームページです。 自然言語処理の発展のため、勉強会や交流会を企画していきます。'
       },
       {
         name: 'author',
@@ -38,13 +38,13 @@ module.exports = {
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'nlpaper.challenge - 自然言語処理の国際会議「ACL」の完全読破 !'
+        content: 'nlpaper.challenge - 自然言語処理の国際会議の完全読破 !'
       },
       {
         hid: 'og:description',
         property: 'og:description',
         content:
-          '自然言語処理の国際会議「ACL」の完全読破を目指すnlpaper.challenge公式ホームページです。 自然言語処理の発展のため、勉強会や交流会を企画していきます。'
+          '自然言語処理の国際会議の完全読破を目指すnlpaper.challenge公式ホームページです。 自然言語処理の発展のため、勉強会や交流会を企画していきます。'
       },
       {
         hid: 'og:image',
@@ -91,7 +91,8 @@ module.exports = {
     'bootstrap-vue/nuxt',
     'nuxt-fontawesome',
     '@nuxtjs/axios',
-    '~/modules/fetchData'
+    '~/modules/fetchData',
+    '~/modules/fetchData_emnlp2019'
   ],
 
   /*
@@ -101,7 +102,7 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    extend(config, ctx) {}
+    extend(config, ctx) { }
   },
 
   router: {
@@ -126,7 +127,7 @@ module.exports = {
   },
 
   generate: {
-    routes: function() {
+    routes: function () {
       const tags = require('./static/data/summaries/tags.json').content
       const allSummaries = require('./static/data/summaries/all.json').content
       const perPage = 5
@@ -141,6 +142,21 @@ module.exports = {
       }
       for (let page = 1; page <= numPage; page++) {
         routes.push(`/summaries/page/${page}`)
+      }
+
+      const emnlp2019_tags = require('./static/data/emnlp2019_summaries/tags.json').content;
+      const emnlp2019_allSummaries = require('./static/data/emnlp2019_summaries/all.json').content;
+      const emnlp2019_perPage = 5;
+      const emnlp2019_numPage = Math.ceil(emnlp2019_allSummaries.length / emnlp2019_perPage);
+
+      for (let tag of emnlp2019_tags) {
+        routes.push(`/emnlp2019_summaries/tag/${tag}`);
+      }
+      for (let i = 1; i <= emnlp2019_allSummaries.length; i++) {
+        routes.push(`/emnlp2019_summaries/${i}`);
+      }
+      for (let page = 1; page <= emnlp2019_numPage; page++) {
+        routes.push(`/emnlp2019_summaries/page/${page}`);
       }
 
       return routes

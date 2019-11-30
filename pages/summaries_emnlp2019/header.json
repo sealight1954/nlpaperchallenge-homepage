@@ -1,5 +1,5 @@
 {
-  "title": "NLPaper.challenge",
+  "title": "EMNLP2019サーベイまとめ",
   "meta": [
     {
       "hid": "charset",
@@ -13,7 +13,7 @@
     {
       "hid": "description",
       "name": "description",
-      "content": "nlpaper.challenge"
+      "content": "EMNLP2019の全論文を読んで各要素200文字でまとめる挑戦の成果物です。"
     },
     {
       "hid": "author",
@@ -38,12 +38,12 @@
     {
       "hid": "og:title",
       "property": "og:title",
-      "content": "nlpaper.challenge"
+      "content": "EMNLP2019サーベイまとめ"
     },
     {
       "hid": "og:description",
       "property": "og:description",
-      "content": "nlpaper.challenge"
+      "content": "EMNLP2019の全論文を読んで各要素200文字でまとめる挑戦の成果物です。"
     },
     {
       "hid": "og:image",
@@ -53,7 +53,7 @@
     {
       "hid": "og:url",
       "property": "og:url",
-      "content": "http://xpaperchallenge.org/nlp/summaries"
+      "content": "http://xpaperchallenge.org/nlp/summaries_emnlp2019"
     }
   ],
   "link": [
