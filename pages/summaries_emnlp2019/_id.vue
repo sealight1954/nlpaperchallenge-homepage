@@ -59,7 +59,7 @@
           <ul class="article-tag-list">
             <li v-for="(tag, idx) in summary.tags" :key="idx" class="article-tag-list-item">
               <nuxt-link
-                :to="`/summaries/tag/${tag.toLowerCase()}`"
+                :to="`/summaries_emnlp2019/tag/${tag.toLowerCase()}`"
                 class="article-tag-list-link"
               >{{ tag }}</nuxt-link>
             </li>
@@ -94,7 +94,7 @@ export default {
     let {
       content: summary,
       meta: { totalCount }
-    } = require(`~/static/data/summaries/id/${id}.json`);
+    } = require(`~/static/data/summaries_emnlp2019/id/${id}.json`);
     let header = require(`../header.json`);
     return {
       id,
@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     handleChange(page) {
-      this.$router.push(`/summaries/${page}`);
+      this.$router.push(`/summaries_emnlp2019/${page}`);
     }
   },
   head() {
@@ -126,7 +126,7 @@ export default {
     ).content = `http://xpaperchallenge.org${this.summary.image}`;
     header_t["meta"].find(
       e => e.hid == "og:url"
-    ).content = `http://xpaperchallenge.org/nlp/summaries/${this.id}`;
+    ).content = `http://xpaperchallenge.org/nlp/summaries_emnlp2019/${this.id}`;
     return header_t;
   }
 };
