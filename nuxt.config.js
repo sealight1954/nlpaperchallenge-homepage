@@ -144,19 +144,19 @@ module.exports = {
         routes.push(`/summaries/page/${page}`)
       }
 
-      const emnlp2019_tags = require('./static/data/emnlp2019_summaries/tags.json').content;
-      const emnlp2019_allSummaries = require('./static/data/emnlp2019_summaries/all.json').content;
+      const emnlp2019_tags = require('./static/data/summaries_emnlp2019/tags.json').content;
+      const emnlp2019_allSummaries = require('./static/data/summaries_emnlp2019/all.json').content;
       const emnlp2019_perPage = 5;
       const emnlp2019_numPage = Math.ceil(emnlp2019_allSummaries.length / emnlp2019_perPage);
 
       for (let tag of emnlp2019_tags) {
-        routes.push(`/emnlp2019_summaries/tag/${tag}`);
+        routes.push(`/summaries_emnlp2019/tag/${tag}`);
       }
       for (let i = 1; i <= emnlp2019_allSummaries.length; i++) {
-        routes.push(`/emnlp2019_summaries/${i}`);
+        routes.push(`/summaries_emnlp2019/${i}`);
       }
       for (let page = 1; page <= emnlp2019_numPage; page++) {
-        routes.push(`/emnlp2019_summaries/page/${page}`);
+        routes.push(`/summaries_emnlp2019/page/${page}`);
       }
 
       return routes
