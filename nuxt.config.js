@@ -92,7 +92,7 @@ module.exports = {
     'nuxt-fontawesome',
     '@nuxtjs/axios',
     '~/modules/fetchData',
-    '~/modules/fetchData_emnlp2019'
+    // '~/modules/fetchData_emnlp2019'
   ],
 
   /*
