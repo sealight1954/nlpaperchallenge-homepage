@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import SummaryCard from "~/components/SummaryCard.vue";
+import SummaryCard from "~/components/SummaryCard_emnlp2019.vue";
 import axios from "axios";
 
 export default {
