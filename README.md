@@ -1,7 +1,5 @@
 # nlpaperchallenge-homepage
 
-> NLPaperchallenge&#39;s Homepage project
-
 ## Build Setup
 
 ``` bash
