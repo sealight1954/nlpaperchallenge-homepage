@@ -44,6 +44,10 @@ module.exports = function fetchData() {
     })
   }
 
+  const normalizeTag = (tag) => {
+    return tag.toLowerCase().replace(/\s+/g, '-').replace('#', '')
+  }
+
   const getData = async builder => {
     fs.emptyDir('static/data')
     console.log(`STARTING JSON BUILD FOR ${urls[0]},${urls[1]},${urls[2]}...`)
@@ -103,12 +107,12 @@ module.exports = function fetchData() {
 
       // Create summary per tag
       fs.emptyDir(`static/data/summaries/${confKey}/tag/`);
-      const tagset = new Set(allSummaries.data.reduce((a, b) => [...a, ...b.tags], []).map(tag => tag.toLowerCase().replace(/\s+/g, '-')));
+      const tagset = new Set(allSummaries.data.reduce((a, b) => [...a, ...b.tags.filter(tag => tag)], []).map(tag => normalizeTag(tag)));
 
       fetcher.push(writeData(`static/data/summaries/${confKey}/tags.json`, { content: Array.from(tagset) }));
 
       for (let tag of tagset) {
-        let summariesByTag = allSummaries.data.filter(summary => summary.tags.map(tag => tag.toLowerCase().replace(/\s+/g, '-')).includes(tag));
+        let summariesByTag = allSummaries.data.filter(summary => summary.tags.filter(tag => tag).map(tag => normalizeTag(tag)).includes(tag));
         let tagDataPath = `static/data/summaries/${confKey}/tag/${tag}/list.json`;
 
         fetcher.push(writeData(tagDataPath, { content: summariesByTag, meta: { totalCount: summariesByTag.length } }));

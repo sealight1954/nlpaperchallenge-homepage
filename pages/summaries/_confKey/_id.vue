@@ -121,7 +121,7 @@ export default {
       this.$router.push(`/summaries/${this.confKey}/${page}`);
     },
     normalizeTag(tag) {
-      return tag.toLowerCase().replace(/\s+/g, '-');
+      return tag.toLowerCase().replace(/\s+/g, '-').replace('#', '');
     }
   },
   head() {
