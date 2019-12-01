@@ -128,7 +128,7 @@ module.exports = {
 
   generate: {
     routes: function () {
-      const confKeys = require('./static/data/confKeys.json')
+      const confKeys = require('./static/data/confKeys.json').content
 
       let routes = []
       for(let confKey of confKeys) {
