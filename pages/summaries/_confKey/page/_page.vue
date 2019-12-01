@@ -6,6 +6,11 @@
           <div class="text-center">論文サマリ</div>
         </b-container>
       </template>
+      <template slot="lead">
+        <b-container>
+          <div class="text-center">{{ confKey }}</div>
+        </b-container>
+      </template>
     </b-jumbotron>
 
     <b-container v-if="!isLoading">
@@ -19,7 +24,7 @@
         </b-pagination>
       </div>
       <div class="mb-4" v-for="(summary, idx) in summaries" :key="idx">
-        <summary-card :summary="summary"/>
+        <summary-card :summary="summary" :conf-key="confKey"/>
       </div>
       <b-pagination
         :value="page"
@@ -45,10 +50,12 @@ export default {
   },
   asyncData({ params }) {
     let page = parseInt(params.page);
-    let { content: summaries, meta: { totalCount } } = require(`~/static/data/summaries/page/${page}/list.json`);
-    let header = require(`../../header.json`)
+    let confKey = params.confKey;
+    let { content: summaries, meta: { totalCount } } = require(`~/static/data/summaries/${confKey}/page/${page}/list.json`);
+    let header = require(`../header.json`)[confKey]
     return {
       summaries,
+      confKey,
       page,
       totalCount,
       isLoading: false,
@@ -57,7 +64,7 @@ export default {
   },
   methods: {
     handleChangePage(page) {
-      this.$router.push(`/summaries/page/${page}`);
+      this.$router.push(`/summaries/${this.confKey}/page/${page}`);
     }
   },
   head() {

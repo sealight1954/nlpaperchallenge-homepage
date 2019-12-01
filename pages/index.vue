@@ -11,7 +11,7 @@
 
       <template slot="lead">
         <b-container>
-          <div class="text-center">自然言語処理の国際会議「ACL」の完全読破を目指しています。</div>
+          <div class="text-center">自然言語処理の国際会議の完全読破を目指しています。</div>
           <div class="text-center">自然言語処理の発展のため、勉強会や交流会を企画していきます。</div>
         </b-container>
       </template>

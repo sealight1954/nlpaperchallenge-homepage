@@ -16,11 +16,16 @@
 
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav class="ml-auto">
-          <b-nav-item to="/schedule" :active="isActive('/schedule')">Schedule</b-nav-item>
-          <b-nav-item to="/members" :active="isActive('/members')">Members</b-nav-item>
-          <b-nav-item to="/resources" :active="isActive('/resources')">Resources</b-nav-item>
-          <b-nav-item to="/summaries" :active="isActive('/summaries')">ACL2019</b-nav-item>
-          <b-nav-item to="/summaries_emnlp2019" :active="isActive('/summaries_emnlp2019')">EMNLP2019</b-nav-item>
+          <b-nav-item to="/schedule" :active="isActive('/schedule')">スケジュール</b-nav-item>
+          <b-nav-item to="/members" :active="isActive('/members')">メンバー</b-nav-item>
+          <b-nav-item to="/resources" :active="isActive('/resources')">リソース</b-nav-item>
+          <b-nav-item-dropdown
+            text="論文サマリ"
+            class="mr-3"
+          >
+            <b-dropdown-item to="/summaries/acl2019" :active="isActive('/summaries/acl2019')">ACL 2019</b-dropdown-item>
+            <b-dropdown-item to="/summaries/emnlp2019" :active="isActive('/summaries/emnlp2019')">EMNLP 2019</b-dropdown-item>
+          </b-nav-item-dropdown>
           <b-button
             href="http://xpaperchallenge.org/cv/"
             variant="primary main-button"
