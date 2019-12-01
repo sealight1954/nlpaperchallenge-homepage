@@ -13,7 +13,12 @@
         <div class="article-header">
           <b-row>
             <b-col :sm="12" :md="6">
-              <div class="article-id">#{{ summary.id }}</div>
+              <div class="article-id">
+                <span>#{{ summary.id }}</span>
+                <span>
+                  <nuxt-link :to="`/summaries/${confKey}`">#{{confKey}}</nuxt-link>
+                </span>
+              </div>
             </b-col>
             <b-col :sm="12" :md="6">
               <div class="article-resumer">summarized by : {{ summary.resumer }}</div>
@@ -57,9 +62,9 @@
         </div>
         <div class="article-footer">
           <ul class="article-tag-list">
-            <li v-for="(tag, idx) in summary.tags" :key="idx" class="article-tag-list-item">
+            <li v-for="(tag, idx) in nonEmptyTags" :key="idx" class="article-tag-list-item">
               <nuxt-link
-                :to="`/summaries/tag/${tag.toLowerCase()}`"
+                :to="`/summaries/${confKey}/tag/${normalizeTag(tag)}`"
                 class="article-tag-list-link"
               >{{ tag }}</nuxt-link>
             </li>
@@ -91,22 +96,32 @@ export default {
   },
   asyncData({ params }) {
     let id = params.id;
+    let confKey = params.confKey
     let {
       content: summary,
       meta: { totalCount }
-    } = require(`~/static/data/summaries/id/${id}.json`);
-    let header = require(`../header.json`);
+    } = require(`~/static/data/summaries/${confKey}/id/${id}.json`);
+    let header = require(`./header.json`)[confKey];
     return {
       id,
+      confKey,
       summary,
       totalCount,
       isLoading: false,
       header
     };
   },
+  computed: {
+    nonEmptyTags() {
+      return this.summary.tags.filter(tag => tag);
+    },
+  },
   methods: {
     handleChange(page) {
-      this.$router.push(`/summaries/${page}`);
+      this.$router.push(`/summaries/${this.confKey}/${page}`);
+    },
+    normalizeTag(tag) {
+      return tag.toLowerCase().replace(/\s+/g, '-').replace('#', '');
     }
   },
   head() {
@@ -126,7 +141,7 @@ export default {
     ).content = `http://xpaperchallenge.org${this.summary.image}`;
     header_t["meta"].find(
       e => e.hid == "og:url"
-    ).content = `http://xpaperchallenge.org/nlp/summaries/${this.id}`;
+    ).content = `http://xpaperchallenge.org/nlp/summaries/${this.confKey}/${this.id}`;
     return header_t;
   }
 };

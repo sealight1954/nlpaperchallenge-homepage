@@ -3,11 +3,12 @@
     <b-jumbotron header-level="4">
       <template slot="header">
         <b-container>
-          <div class="text-center">論文サマリー</div>
+          <div class="text-center">論文サマリ</div>
         </b-container>
       </template>
       <template slot="lead">
         <b-container>
+          <div class="text-center">{{ confKey }}</div>
           <div class="text-center">tag: {{ tag }}</div>
         </b-container>
       </template>
@@ -23,7 +24,7 @@
         </b-pagination>
       </div>
       <div class="mb-4" v-for="(summary, idx) in summaryByPage" :key="idx">
-        <summary-card :summary="summary"/>
+        <summary-card :summary="summary" :conf-key="confKey"/>
       </div>
       <div class="mb-4">
         <b-pagination
@@ -50,9 +51,12 @@ export default {
   },
   asyncData({ params }) {
     let tag = params.tag;
-    let { content: summaries, meta: { totalCount } } = require(`~/static/data/summaries/tag/${tag.toLowerCase()}/list.json`);
+    let confKey = params.confKey;
+    let { content: summaries, meta: { totalCount } } = require(`~/static/data/summaries/${confKey}/tag/${tag.toLowerCase()}/list.json`);
+    let header = require(`../header.json`)[confKey]
     return {
       summaries,
+      confKey,
       tag,
       page: 1,
       totalCount,
@@ -65,6 +69,9 @@ export default {
       let end = (this.page - 1) * 5 + 5;
       return this.summaries.slice(start, end);
     }
-  }
+  },
+  head() {
+    return this.header;
+  },
 };
 </script>

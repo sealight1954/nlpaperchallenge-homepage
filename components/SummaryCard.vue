@@ -1,9 +1,9 @@
 <template>
   <b-card class="with-shadow">
     <b-media>
-      <h5 class="mt-0"><nuxt-link :to="`/summaries/${summary.id}`">{{ summary.title }}</nuxt-link></h5>
+      <h5 class="mt-0"><nuxt-link :to="`/summaries/${confKey}/${summary.id}`">{{ summary.title }}</nuxt-link></h5>
       <div>by: {{ summary.resumer }}</div>
-      <nuxt-link :to="`/summaries/tag/${tag.toLowerCase()}`" class="tag tag-primary" v-for="(tag, idx) in summary.tags" :key="idx">
+      <nuxt-link :to="`/summaries/${confKey}/tag/${normalizeTag(tag)}`" class="tag tag-primary mr-2" v-for="(tag, idx) in nonEmptyTags" :key="idx">
         {{ tag }}
       </nuxt-link>
     </b-media>
@@ -13,7 +13,19 @@
 <script>
 export default {
   props: {
-    summary: Object
+    summary: Object,
+    confKey: String
+  },
+  computed: {
+    nonEmptyTags() {
+      // Filter undefined tag
+      return this.summary.tags.filter(tag => tag)
+    }
+  },
+  methods: {
+    normalizeTag(tag) {
+      return tag.toLowerCase().replace(/\s+/g, '-').replace('#', '')
+    }
   }
 };
 </script>

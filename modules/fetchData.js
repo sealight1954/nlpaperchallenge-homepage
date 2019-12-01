@@ -1,26 +1,19 @@
 const fs = require('fs-extra')
 const axios = require('axios')
 
-const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxmGjl76YSWUtMBrapRFat2KI_qdG3r31Zq6h_H4rNbSPUEA-zh/exec'
-
+// URL for general information
+const GOOGLE_APP_SCRIPT_RESOURCE_URL = 'https://script.google.com/macros/s/AKfycbxmGjl76YSWUtMBrapRFat2KI_qdG3r31Zq6h_H4rNbSPUEA-zh/exec'
 const urls = [
-  `${GOOGLE_APP_SCRIPT_URL}?entity=events`,
-  `${GOOGLE_APP_SCRIPT_URL}?entity=members`,
-  `${GOOGLE_APP_SCRIPT_URL}?entity=resources`,
-  `${GOOGLE_APP_SCRIPT_URL}?entity=summaries`,
-  `${GOOGLE_APP_SCRIPT_URL}?entity=image`,
+  `${GOOGLE_APP_SCRIPT_RESOURCE_URL}?entity=events`,
+  `${GOOGLE_APP_SCRIPT_RESOURCE_URL}?entity=members`,
+  `${GOOGLE_APP_SCRIPT_RESOURCE_URL}?entity=resources`,
 ]
 
-
-const GOOGLE_APP_SCRIPT_URL_emnlp2019 = 'https://script.google.com/macros/s/AKfycbzhiH6N938vsgap6CsosVNNMRmJBmqCyVjW0d5LPzioVkhF_kRd/exec'
-
-const urls_emnlp2019 = [
-  // `${GOOGLE_APP_SCRIPT_URL_emnlp2019}?entity=events`,
-  // `${GOOGLE_APP_SCRIPT_URL_emnlp2019}?entity=members`,
-  // `${GOOGLE_APP_SCRIPT_URL_emnlp2019}?entity=resources`,
-  `${GOOGLE_APP_SCRIPT_URL_emnlp2019}?entity=summaries`,
-  `${GOOGLE_APP_SCRIPT_URL_emnlp2019}?entity=image`,
-]
+// URL for Conferences Summaries
+const conferenceUrls = {
+  "acl2019": 'https://script.google.com/macros/s/AKfycbxmGjl76YSWUtMBrapRFat2KI_qdG3r31Zq6h_H4rNbSPUEA-zh/exec?entity=summaries',
+  "emnlp2019": 'https://script.google.com/macros/s/AKfycbzhiH6N938vsgap6CsosVNNMRmJBmqCyVjW0d5LPzioVkhF_kRd/exec?entity=summaries'
+}
 
 
 
@@ -51,6 +44,10 @@ module.exports = function fetchData() {
     })
   }
 
+  const normalizeTag = (tag) => {
+    return tag.toLowerCase().replace(/\s+/g, '-').replace('#', '')
+  }
+
   const getData = async builder => {
     fs.emptyDir('static/data')
     console.log(`STARTING JSON BUILD FOR ${urls[0]},${urls[1]},${urls[2]}...`)
@@ -60,155 +57,77 @@ module.exports = function fetchData() {
     const allEvents = await axios.get(urls[0])
     const allMembers = await axios.get(urls[1])
     const allResources = await axios.get(urls[2])
-    const allSummaries = await axios.get(urls[3])
 
     fetcher.push(writeData('static/data/events.json', { content: allEvents.data }))
     fetcher.push(writeData('static/data/members.json', { content: allMembers.data }))
     fetcher.push(writeData('static/data/resources.json', { content: allResources.data }))
 
-    // download all image and save to static data
-    fs.emptyDir(`static/image/summaries`)
-    for (let summary of allSummaries.data) {
-      // if(summary['image']) {
-      //   const response = await axios.get(`${urls[4]}&image_id=${summary['image']}`)
-      //   console.log(`Downloading image with image_id=${summary['image']}`)
-      //   const [ meta, base64encodedData ] = response.data.split(',')
-      //   const extension = meta.split(';')[0].substring(11)
-      //   const path = `static/image/summaries/${summary.id}.${extension}`
-      //   fetcher.push(writeImage(path, base64encodedData))
-      //   summary["image"] = `/nlp/image/summaries/${summary.id}.${extension}`
-      // }
-      if (summary['image']) {
-        summary['image'] = 'https://drive.google.com/uc?export=view&id=' + summary['image'];
-        // delete summary.images; //とりあえず
+    // Save conference keys
+    let confKeys = Object.keys(conferenceUrls)
+    console.log("conference keys:" + confKeys)
+    fetcher.push(writeData('static/data/confKeys.json', { content: confKeys }))
+
+    // Fetch conference summaries
+    let confSummaries = {}
+    for(let key of confKeys) {
+      console.log("Downloading from:" + conferenceUrls[key])
+      confSummaries[key] = await axios.get(conferenceUrls[key])
+    }
+
+    // Overwrite summary image path with google drive path
+    for(let key of confKeys) {
+      let summaries = confSummaries[key]
+      for(let summary of summaries.data) {
+        if (summary['image']) {
+          summary['image'] = 'https://drive.google.com/uc?export=view&id=' + summary['image']
+        }
       }
     }
 
-    // Create list data of all summary data
-    fs.emptyDir('static/data/summaries');
-    fetcher.push(writeData('static/data/summaries/all.json', { content: allSummaries.data }));
+    for(let confKey of confKeys) {
+      let allSummaries = confSummaries[confKey]
 
-    // Create summary per page data
-    fs.emptyDir('static/data/summaries/page/');
-    const countPerPage = 5
-    const numPages = Math.ceil(allSummaries.data.length / countPerPage);
-    for (let i = 0; i < numPages; i++) {
-      let page = i + 1;
-      let start = i * countPerPage;
-      let end = i * countPerPage + 5;
-      let summariesPerPage = allSummaries.data.slice(start, end);
-      let pageDataPath = `static/data/summaries/page/${page}/list.json`;
+      // Create list data of all summary data of conference
+      fs.emptyDir(`static/data/summaries/${confKey}`);
+      fetcher.push(writeData(`static/data/summaries/${confKey}/all.json`, { content: allSummaries.data }))
 
-      fetcher.push(writeData(pageDataPath, { content: summariesPerPage, meta: { totalCount: allSummaries.data.length } }));
-    }
+      // Create summary per page data
+      fs.emptyDir(`static/data/summaries/${confKey}/page/`);
+      const countPerPage = 5;
+      const numPages = Math.ceil(allSummaries.data.length / countPerPage);
+      for (let i = 0; i < numPages; i++) {
+        let page = i + 1;
+        let start = i * countPerPage;
+        let end = i * countPerPage + 5;
+        let summariesPerPage = allSummaries.data.slice(start, end);
+        let pageDataPath = `static/data/summaries/${confKey}/page/${page}/list.json`;
 
-    // Create summary per tag
-    fs.emptyDir('static/data/summaries/tag/');
-    const tagset = new Set(allSummaries.data.reduce((a, b) => [...a, ...b.tags], []).map(tag => tag.toLowerCase()));
-
-    fetcher.push(writeData('static/data/summaries/tags.json', { content: Array.from(tagset) }));
-
-    console.log(tagset)
-    for (let tag of tagset) {
-      let summariesByTag = allSummaries.data.filter(summary => summary.tags.map(tag => tag.toLowerCase()).includes(tag));
-      let tagDataPath = `static/data/summaries/tag/${tag}/list.json`;
-
-      fetcher.push(writeData(tagDataPath, { content: summariesByTag, meta: { totalCount: summariesByTag.length } }));
-    }
-
-    // Save Summary per Id
-    fs.emptyDir(`static/data/summaries/id`);
-    for (let summary of allSummaries.data) {
-      let summaryPath = `static/data/summaries/id/${summary.id}.json`;
-
-      fetcher.push(writeData(summaryPath, { content: summary, meta: { totalCount: allSummaries.data.length } }));
-    }
-
-    console.log(`PROCESSING events, members, resources, and summaries...`)
-
-    return Promise.all(fetcher)
-      .then(() => {
-        console.log('JSON Build complete!')
-      })
-      .catch(e => {
-        throw e
-      })
-  }
-
-  const getData2 = async builder => {
-    // fs.emptyDir('static/data')
-    console.log(`STARTING JSON BUILD FOR ${urls_emnlp2019[0]},${urls_emnlp2019[1]}...`)
-    const fetcher = []
-
-    // Fetch list of events, members, and resources from API
-    // const allEvents = await axios.get(urls[0])
-    // const allMembers = await axios.get(urls[1])
-    // const allResources = await axios.get(urls[2])
-    const allSummaries = await axios.get(urls_emnlp2019[0]).catch((e) => { console.error(e); throw e; });
-
-    // fetcher.push(writeData('static/data/events.json', { content: allEvents.data }))
-    // fetcher.push(writeData('static/data/members.json', { content: allMembers.data }))
-    // fetcher.push(writeData('static/data/resources.json', { content: allResources.data }))
-
-    // download all image and save to static data
-    fs.emptyDir(`static/image/summaries_emnlp2019`)
-    for (let summary of allSummaries.data) {
-      // if (summary['image']) {
-      //   const response = await axios.get(`${urls[4]}&image_id=${summary['image']}`)
-      //   console.log(`Downloading image with image_id=${summary['image']}`)
-      //   const [meta, base64encodedData] = response.data.split(',')
-      //   const extension = meta.split(';')[0].substring(11)
-      //   const path = `static/image/summaries_emnlp2019/${summary.id}.${extension}`
-      //   fetcher.push(writeImage(path, base64encodedData))
-      //   summary["image"] = `/nlp/image/summaries_emnlp2019/${summary.id}.${extension}`
-      // }
-      if (summary['images']) {
-        summary['image'] = 'https://drive.google.com/uc?export=view&id=' + summary['images'][0];
-        // delete summary.images; //とりあえず
+        fetcher.push(writeData(pageDataPath, { content: summariesPerPage, meta: { totalCount: allSummaries.data.length } }));
       }
+
+      // Create summary per tag
+      fs.emptyDir(`static/data/summaries/${confKey}/tag/`);
+      const tagset = new Set(allSummaries.data.reduce((a, b) => [...a, ...b.tags.filter(tag => tag)], []).map(tag => normalizeTag(tag)));
+
+      fetcher.push(writeData(`static/data/summaries/${confKey}/tags.json`, { content: Array.from(tagset) }));
+
+      for (let tag of tagset) {
+        let summariesByTag = allSummaries.data.filter(summary => summary.tags.filter(tag => tag).map(tag => normalizeTag(tag)).includes(tag));
+        let tagDataPath = `static/data/summaries/${confKey}/tag/${tag}/list.json`;
+
+        fetcher.push(writeData(tagDataPath, { content: summariesByTag, meta: { totalCount: summariesByTag.length } }));
+      }
+
+      // Save Summary per Id
+      fs.emptyDir(`static/data/summaries/${confKey}/id`);
+      for (let summary of allSummaries.data) {
+        let summaryPath = `static/data/summaries/${confKey}/id/${summary.id}.json`;
+
+        fetcher.push(writeData(summaryPath, { content: summary, meta: { totalCount: allSummaries.data.length } }));
+      }
+
+      console.log(`PROCESSING events, members, resources, and summaries...`)
     }
-
-    // Create list data of all summary data
-    fs.emptyDir('static/data/summaries_emnlp2019');
-    fetcher.push(writeData('static/data/summaries_emnlp2019/all.json', { content: allSummaries.data }));
-
-    // Create summary per page data
-    fs.emptyDir('static/data/summaries_emnlp2019/page/');
-    const countPerPage = 5
-    const numPages = Math.ceil(allSummaries.data.length / countPerPage);
-    for (let i = 0; i < numPages; i++) {
-      let page = i + 1;
-      let start = i * countPerPage;
-      let end = i * countPerPage + 5;
-      let summariesPerPage = allSummaries.data.slice(start, end);
-      let pageDataPath = `static/data/summaries_emnlp2019/page/${page}/list.json`;
-
-      fetcher.push(writeData(pageDataPath, { content: summariesPerPage, meta: { totalCount: allSummaries.data.length } }));
-    }
-
-    // Create summary per tag
-    fs.emptyDir('static/data/summaries_emnlp2019/tag/');
-    const tagset = new Set(allSummaries.data.reduce((a, b) => [...a, ...b.tags], []).map(tag => tag.toLowerCase()));
-
-    fetcher.push(writeData('static/data/summaries_emnlp2019/tags.json', { content: Array.from(tagset) }));
-
-    console.log(tagset)
-    for (let tag of tagset) {
-      let summariesByTag = allSummaries.data.filter(summary => summary.tags.map(tag => tag.toLowerCase()).includes(tag));
-      let tagDataPath = `static/data/summaries_emnlp2019/tag/${tag}/list.json`;
-
-      fetcher.push(writeData(tagDataPath, { content: summariesByTag, meta: { totalCount: summariesByTag.length } }));
-    }
-
-    // Save Summary per Id
-    fs.emptyDir(`static/data/summaries_emnlp2019/id`);
-    for (let summary of allSummaries.data) {
-      let summaryPath = `static/data/summaries_emnlp2019/id/${summary.id}.json`;
-
-      fetcher.push(writeData(summaryPath, { content: summary, meta: { totalCount: allSummaries.data.length } }));
-    }
-
-    console.log(`PROCESSING events, members, resources, and summaries...`)
 
     return Promise.all(fetcher)
       .then(() => {
@@ -221,5 +140,4 @@ module.exports = function fetchData() {
 
   // Run it before the nuxt build stage
   this.nuxt.hook('build:before', getData)
-  this.nuxt.hook('build:before', getData2)
 }
