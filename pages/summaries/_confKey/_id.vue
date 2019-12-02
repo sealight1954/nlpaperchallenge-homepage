@@ -1,14 +1,7 @@
 <template>
   <div>
     <b-container v-if="!isLoading">
-      <b-pagination
-        class="pagination-top"
-        :per-page="1"
-        :value="summary.id"
-        :total-rows="totalCount"
-        align="center"
-        @change="handleChange"
-      />
+      <b-pagination class="pagination-top" :per-page="1" :value="summary.id" :total-rows="totalCount" align="center" @change="handleChange" />
       <div class="article-inner">
         <div class="article-header">
           <b-row>
@@ -41,14 +34,7 @@
               <div class="section-content">{{ summary.overview }}</div>
             </b-col>
             <b-col sm="12" md="5" class="text-center">
-              <b-img
-                v-if="summary.image"
-                fluid
-                class="section-image"
-                slot="aside"
-                :src="summary.image"
-                alt="placeholder"
-              />
+              <b-img v-if="summary.image" fluid class="section-image" slot="aside" :src="summary.image" alt="placeholder" />
             </b-col>
           </b-row>
           <h3 class="section-header">
@@ -63,22 +49,13 @@
         <div class="article-footer">
           <ul class="article-tag-list">
             <li v-for="(tag, idx) in nonEmptyTags" :key="idx" class="article-tag-list-item">
-              <nuxt-link
-                :to="`/summaries/${confKey}/tag/${normalizeTag(tag)}`"
-                class="article-tag-list-link"
-              >{{ tag }}</nuxt-link>
+              <nuxt-link :to="`/summaries/${confKey}/tag/${normalizeTag(tag)}`" class="article-tag-list-link">{{ tag }}</nuxt-link>
             </li>
           </ul>
           <p>このページで利用されている画像は論文から引用しています．</p>
         </div>
       </div>
-      <b-pagination
-        :per-page="1"
-        :value="summary.id"
-        :total-rows="totalCount"
-        align="center"
-        @change="handleChange"
-      />
+      <b-pagination :per-page="1" :value="summary.id" :total-rows="totalCount" align="center" @change="handleChange" />
     </b-container>
     <p v-else class="text-center">
       <font-awesome-icon class="mr-5" :icon="['fas', 'spinner']" pulse size="2x" />
@@ -87,21 +64,21 @@
 </template>
 
 <script>
-import ResourceCard from "~/components/ResourceCard.vue";
-import axios from "axios";
+import ResourceCard from '~/components/ResourceCard.vue'
+import axios from 'axios'
 
 export default {
   components: {
     ResourceCard
   },
   asyncData({ params }) {
-    let id = params.id;
+    let id = params.id
     let confKey = params.confKey
     let {
       content: summary,
       meta: { totalCount }
-    } = require(`~/static/data/summaries/${confKey}/id/${id}.json`);
-    let header = require(`./header.json`)[confKey];
+    } = require(`~/static/data/summaries/${confKey}/id/${id}.json`)
+    let header = require(`./header.json`)[confKey]
     return {
       id,
       confKey,
@@ -109,42 +86,45 @@ export default {
       totalCount,
       isLoading: false,
       header
-    };
+    }
   },
   computed: {
     nonEmptyTags() {
-      return this.summary.tags.filter(tag => tag);
-    },
+      return this.summary.tags.filter(tag => tag)
+    }
   },
   methods: {
     handleChange(page) {
-      this.$router.push(`/summaries/${this.confKey}/${page}`);
+      this.$router.push(`/summaries/${this.confKey}/${page}`)
     },
     normalizeTag(tag) {
-      return tag.toLowerCase().replace(/\s+/g, '-').replace('#', '');
+      return tag
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace('#', '')
     }
   },
   head() {
-    var header_t = Object.assign({}, this.header);
-    header_t["title"] = this.summary.title;
-    header_t["meta"].find(
-      e => e.hid == "description"
-    ).content = this.summary.overview;
-    header_t["meta"].find(
-      e => e.hid == "og:title"
-    ).content = this.summary.title;
-    header_t["meta"].find(
-      e => e.hid == "og:description"
-    ).content = this.summary.overview;
-    header_t["meta"].find(
-      e => e.hid == "og:image"
-    ).content = `http://xpaperchallenge.org${this.summary.image}`;
-    header_t["meta"].find(
-      e => e.hid == "og:url"
-    ).content = `http://xpaperchallenge.org/nlp/summaries/${this.confKey}/${this.id}`;
-    return header_t;
+    var header_t = Object.assign({}, this.header)
+    header_t['title'] = this.summary.title
+    header_t['meta'].find(
+      e => e.hid == 'description'
+    ).content = this.summary.overview
+    header_t['meta'].find(e => e.hid == 'og:title').content = this.summary.title
+    header_t['meta'].find(
+      e => e.hid == 'og:description'
+    ).content = this.summary.overview
+    header_t['meta'].find(e => e.hid == 'og:image').content = `${
+      this.summary.image
+    }`
+    header_t['meta'].find(
+      e => e.hid == 'og:url'
+    ).content = `http://xpaperchallenge.org/nlp/summaries/${this.confKey}/${
+      this.id
+    }`
+    return header_t
   }
-};
+}
 </script>
 
 <style>
@@ -222,7 +202,7 @@ ul {
   margin-right: 10px;
 }
 .article-tag-list-link::before {
-  content: "#";
+  content: '#';
 }
 .article-tag-list + * {
   padding-top: 1em;
