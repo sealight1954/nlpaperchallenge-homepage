@@ -49,7 +49,7 @@ module.exports = function fetchData() {
   }
 
   const getData = async builder => {
-    fs.emptyDir('static/data')
+    fs.emptyDirSync('static/data')
     console.log(`STARTING JSON BUILD FOR ${urls[0]},${urls[1]},${urls[2]}...`)
     const fetcher = []
 
@@ -88,11 +88,11 @@ module.exports = function fetchData() {
       let allSummaries = confSummaries[confKey]
 
       // Create list data of all summary data of conference
-      fs.emptyDir(`static/data/summaries/${confKey}`);
+      fs.emptyDirSync(`static/data/summaries/${confKey}`);
       fetcher.push(writeData(`static/data/summaries/${confKey}/all.json`, { content: allSummaries.data }))
 
       // Create summary per page data
-      fs.emptyDir(`static/data/summaries/${confKey}/page/`);
+      fs.emptyDirSync(`static/data/summaries/${confKey}/page/`);
       const countPerPage = 5;
       const numPages = Math.ceil(allSummaries.data.length / countPerPage);
       for (let i = 0; i < numPages; i++) {
@@ -106,7 +106,7 @@ module.exports = function fetchData() {
       }
 
       // Create summary per tag
-      fs.emptyDir(`static/data/summaries/${confKey}/tag/`);
+      fs.emptyDirSync(`static/data/summaries/${confKey}/tag/`);
       const tagset = new Set(allSummaries.data.reduce((a, b) => [...a, ...b.tags.filter(tag => tag)], []).map(tag => normalizeTag(tag)));
 
       fetcher.push(writeData(`static/data/summaries/${confKey}/tags.json`, { content: Array.from(tagset) }));
@@ -119,7 +119,7 @@ module.exports = function fetchData() {
       }
 
       // Save Summary per Id
-      fs.emptyDir(`static/data/summaries/${confKey}/id`);
+      fs.emptyDirSync(`static/data/summaries/${confKey}/id`);
       for (let summary of allSummaries.data) {
         let summaryPath = `static/data/summaries/${confKey}/id/${summary.id}.json`;
 
