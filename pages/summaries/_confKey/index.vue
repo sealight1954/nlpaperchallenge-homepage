@@ -50,7 +50,15 @@ export default {
   },
   asyncData({ params }) {
     let confKey = params.confKey
-    let { content: summaries, meta: { totalCount } } = require(`~/static/data/summaries/${confKey}/page/1/list.json`);
+    let summaries = [];
+    let totalCount = 0;
+    try {
+      let ret = require(`~/static/data/summaries/${confKey}/page/1/list.json`);
+      summaries = ret["content"];
+      totalCount = ret["meta"]["totalCount"]
+    }
+    catch(e) {
+    }
     let header = require(`./header.json`)[confKey];
     return {
       summaries,

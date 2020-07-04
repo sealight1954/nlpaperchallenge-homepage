@@ -12,7 +12,8 @@ const urls = [
 // URL for Conferences Summaries
 const conferenceUrls = {
   "acl2019": 'https://script.google.com/macros/s/AKfycbxmGjl76YSWUtMBrapRFat2KI_qdG3r31Zq6h_H4rNbSPUEA-zh/exec?entity=summaries',
-  "emnlp2019": 'https://script.google.com/macros/s/AKfycbzhiH6N938vsgap6CsosVNNMRmJBmqCyVjW0d5LPzioVkhF_kRd/exec?entity=summaries'
+  "emnlp2019": 'https://script.google.com/macros/s/AKfycbzhiH6N938vsgap6CsosVNNMRmJBmqCyVjW0d5LPzioVkhF_kRd/exec?entity=summaries',
+  "acl2020": 'https://script.google.com/macros/s/AKfycbxvPS8uE2w2TRXEYhdR1SEXwPuhCJBMPoC67MpB3A/exec?entity=summaries',
 }
 
 

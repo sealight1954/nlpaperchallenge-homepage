@@ -25,6 +25,7 @@
           >
             <b-dropdown-item to="/summaries/acl2019" :active="isActive('/summaries/acl2019')">ACL 2019</b-dropdown-item>
             <b-dropdown-item to="/summaries/emnlp2019" :active="isActive('/summaries/emnlp2019')">EMNLP 2019</b-dropdown-item>
+            <b-dropdown-item to="/summaries/acl2020" :active="isActive('/summaries/acl2020')">ACL 2020</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-button
             href="http://xpaperchallenge.org/cv/"
