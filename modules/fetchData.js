@@ -14,6 +14,7 @@ const conferenceUrls = {
   "acl2019": "https://script.google.com/macros/s/AKfycbwrgF6XCx_CEIhsdoHzoNpQX4xku0DK1CytNZxq9CfzxLlsOPyr/exec?entity=summaries",
   "emnlp2019": "https://script.google.com/macros/s/AKfycbzhiH6N938vsgap6CsosVNNMRmJBmqCyVjW0d5LPzioVkhF_kRd/exec?entity=summaries",
   "acl2020": "https://script.google.com/macros/s/AKfycbyhaHccUOB1QorYZgwDyxC0be-22-3Nv0IyCrqgzLalCLH_o27G/exec?entity=summaries",
+  "acl2021": "https://script.google.com/macros/s/AKfycbypOOIvxNly53Ez-IxE3x7YJyqp5GL9lRyIdeoCuRiJ9vo1aK8_vUdzIjmhc5xtBrUA1A/exec?entity=summaries",
 }
 
 
