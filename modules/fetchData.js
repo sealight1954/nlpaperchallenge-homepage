@@ -13,8 +13,6 @@ const urls = [
 // URL for Conferences Summaries
 const conferenceUrls = {
   "acl2019": "https://script.google.com/macros/s/AKfycbwrgF6XCx_CEIhsdoHzoNpQX4xku0DK1CytNZxq9CfzxLlsOPyr/exec?entity=summaries",
-  // "emnlp2019": "https://script.google.com/macros/s/AKfycbzhiH6N938vsgap6CsosVNNMRmJBmqCyVjW0d5LPzioVkhF_kRd/exec?entity=summaries",
-  // "acl2020": "https://script.google.com/macros/s/AKfycbyhaHccUOB1QorYZgwDyxC0be-22-3Nv0IyCrqgzLalCLH_o27G/exec?entity=summaries",
 }
 
 // https://stackoverflow.com/questions/16229494/converting-excel-date-serial-number-to-date-using-javascript
