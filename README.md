@@ -1,3 +1,6 @@
+# Read Excel Sample
+本リポジトリは[xpaperchallenge/nlpaperchallenge-homepage](https://github.com/xpaperchallenge/nlpaperchallenge-homepage)をもとにローカルに配置したエクセルから論文サマリーを抽出するように変更したものです。
+
 # nlpaperchallenge-homepage
 
 ## Build Setup
@@ -18,4 +21,3 @@ $ yarn run generate
 ```
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
-
