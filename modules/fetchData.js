@@ -125,7 +125,7 @@ module.exports = function fetchData() {
     else
     {
       console.log("Load from local Excel.")
-      // TODO: write another url1-3
+      // TODO: 元のCVCHallengeのリソースそのままなので、書き直す必要
       var allEvents = await axios.get(urls[0])
       var allMembers = await axios.get(urls[1])
       var allResources = await axios.get(urls[2])

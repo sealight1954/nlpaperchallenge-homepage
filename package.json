@@ -8,7 +8,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "dev-debug": "node node_modules/nuxt/bin/nuxt"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.2",
@@ -17,8 +18,9 @@
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "cross-env": "^5.2.0",
-    "nuxt": "^2.14.12",
-    "nuxt-fontawesome": "^0.4.0"
+    "nuxt": "^2.15.7",
+    "nuxt-fontawesome": "^0.4.0",
+    "read-excel-file": "^5.2.8"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"

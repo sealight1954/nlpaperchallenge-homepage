@@ -3,6 +3,7 @@
     <b-media>
       <h5 class="mt-0"><nuxt-link :to="`/summaries/${confKey}/${summary.id}`">{{ summary.title }}</nuxt-link></h5>
       <div>by: {{ summary.resumer }}</div>
+      <!-- v-forでtagについてfor文回して、tagごとのリンク作っている -->
       <nuxt-link :to="`/summaries/${confKey}/tag/${normalizeTag(tag)}`" class="tag tag-primary mr-2" v-for="(tag, idx) in nonEmptyTags" :key="idx">
         {{ tag }}
       </nuxt-link>
