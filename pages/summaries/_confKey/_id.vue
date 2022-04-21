@@ -125,7 +125,7 @@ export default {
     }
   },
   head() {
-    var header_t = Object.assign({}, this.header);
+    var header_t = Object.assign({}, JSON.parse(JSON.stringify(this.header)));
     header_t["title"] = this.summary.title;
     header_t["meta"].find(
       e => e.hid == "description"

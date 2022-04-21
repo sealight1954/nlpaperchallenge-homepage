@@ -23,6 +23,7 @@
             text="論文サマリ"
             class="mr-1"
           >
+
             <!-- class="mr-3" -->
             <!-- <b-dropdown-item to="/summaries/acl2019" :active="isActive('/summaries/acl2019')">ACL 2019</b-dropdown-item> -->
             <!-- <b-dropdown-item to="/summaries/emnlp2019" :active="isActive('/summaries/emnlp2019')">EMNLP 2019</b-dropdown-item> -->
