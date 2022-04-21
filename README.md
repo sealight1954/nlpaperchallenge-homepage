@@ -2,6 +2,10 @@
 本リポジトリは[xpaperchallenge/nlpaperchallenge-homepage](https://github.com/xpaperchallenge/nlpaperchallenge-homepage)をもとにローカルに配置したエクセルから論文サマリーを抽出するように変更したものです。
 
 # 自分用メモ
+
+## 2022.04.22 デバッグ方法
+- https://nullpoint.hatenablog.com/entry/2019/10/14/210107
+- package.json, nuxt.config.jsonを書き換える．昔やった気がしたができてない？
 ## 親ディレクトリ、呼び出し元からの情報のもらい方。
 - 例えばcomponents/SummaryCard.vueはsummaryとconfKeyをprops(プロパティ,入力)として持っていて、1つの論文要約の情報にアクセスして表示できる。これは具体的にはどこからもらっている？
 - nuxt.config.jsの中で動的なルーティングを行なっている。 https://nuxtjs.org/ja/docs/features/file-system-routing/
@@ -11,6 +15,39 @@
 - もう一点、_page.vueなどで`<summary-card :summary="summary" :conf-key="confKey"/>`でSummaryCard.vueのコンポーネントが呼び出されている様子。SummaryCard->summary-cardの変換を自動でやってくれる？
   - ここにhttps://vuejs.org/v2/style-guide/#Multi-word-component-names-essential　Essentialって書いてあるが、等価と捉えていいのか？どこかで見た気がする。。
 - https://nuxtjs.org/ja/docs/directory-structure/pages も重要そう。asyncDataの中の作法
+
+## asyncDataの中の作法
+```
+return {
+      id,
+      confKey,
+      summary,
+      totalCount,
+      isLoading: false,
+      header
+    };
+```
+- としている箇所が_id, index, _page, _tagそれぞれである。それぞれから_id.vueに遷移できて、<template>の中で個々のsummaryを表示
+- summary-cardはindex, pageなどで呼ばれて、_idとtag表示用。
+  ```
+  <nuxt-link :to="`/summaries/${confKey}/${summary.id}`">{{ summary.title }}</nuxt-link>
+  ```
+  の部分
+
+## summaries部分を_articleKeyなど？
+どうやって複数の記事typeを持たせる？
+- summaries
+- qa
+どうする？
+- index.vueを作る？
+
+- _idの中で分岐
+  - confKeyに応じて表示内容変える。
+  - 美しくない。。
+summary-cardの中で分岐？
+- 異なる_id
+## 新しい形式の_id?
+- _idだけ異なる
 # nlpaperchallenge-homepage
 
 ## Build Setup
